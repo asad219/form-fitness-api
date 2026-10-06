@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-06T07:23:42.229Z",
+  "generatedAt": "2026-10-06T19:10:49.119Z",
   "models": {
     "User": {
       "collection": "users",
@@ -44,6 +44,33 @@
           "required": false,
           "default": false
         },
+        "authProvider": {
+          "type": "String",
+          "required": false,
+          "enum": [
+            "LOCAL",
+            "GOOGLE",
+            "APPLE",
+            "FACEBOOK"
+          ],
+          "default": "LOCAL"
+        },
+        "membershipStatus": {
+          "type": "String",
+          "required": false,
+          "enum": [
+            "NONE",
+            "ACTIVE",
+            "VIP"
+          ],
+          "default": "NONE"
+        },
+        "savedPaymentMethods": {
+          "type": "Array",
+          "required": false,
+          "arrayOf": "DocumentArrayElement",
+          "default": []
+        },
         "_id": {
           "type": "ObjectId",
           "required": false
@@ -68,6 +95,382 @@
         [
           {
             "email": 1
+          },
+          {
+            "unique": true
+          }
+        ]
+      ]
+    },
+    "TrainingClass": {
+      "collection": "trainingclasses",
+      "timestamps": true,
+      "fields": {
+        "title": {
+          "type": "String",
+          "required": true
+        },
+        "description": {
+          "type": "String",
+          "required": true
+        },
+        "category": {
+          "type": "String",
+          "required": true,
+          "enum": [
+            "GROUP_CLASS",
+            "PERSONAL_TRAINING",
+            "COACHING"
+          ],
+          "index": true
+        },
+        "durationMinutes": {
+          "type": "Number",
+          "required": true
+        },
+        "level": {
+          "type": "String",
+          "required": false,
+          "default": "All levels"
+        },
+        "coachName": {
+          "type": "String",
+          "required": true
+        },
+        "price": {
+          "type": "Number",
+          "required": true
+        },
+        "rating": {
+          "type": "Number",
+          "required": false,
+          "default": 5
+        },
+        "reviewCount": {
+          "type": "Number",
+          "required": false,
+          "default": 0
+        },
+        "imageUrl": {
+          "type": "String",
+          "required": true
+        },
+        "includedInMembership": {
+          "type": "Boolean",
+          "required": false,
+          "default": false
+        },
+        "cancellationWindowHours": {
+          "type": "Number",
+          "required": false,
+          "default": 12
+        },
+        "_id": {
+          "type": "ObjectId",
+          "required": false
+        },
+        "createdAt": {
+          "type": "Date",
+          "required": false
+        },
+        "updatedAt": {
+          "type": "Date",
+          "required": false
+        },
+        "__v": {
+          "type": "Number",
+          "required": false
+        }
+      },
+      "virtuals": {
+        "id": {}
+      },
+      "indexes": [
+        [
+          {
+            "category": 1
+          },
+          {}
+        ]
+      ]
+    },
+    "ClassSession": {
+      "collection": "classsessions",
+      "timestamps": true,
+      "fields": {
+        "classId": {
+          "type": "ObjectId",
+          "required": true,
+          "ref": "TrainingClass",
+          "index": true
+        },
+        "location": {
+          "type": "String",
+          "required": true
+        },
+        "date": {
+          "type": "Date",
+          "required": true,
+          "index": true
+        },
+        "startTime": {
+          "type": "String",
+          "required": true
+        },
+        "endTime": {
+          "type": "String",
+          "required": true
+        },
+        "totalSpots": {
+          "type": "Number",
+          "required": true
+        },
+        "bookedSpots": {
+          "type": "Number",
+          "required": false,
+          "default": 0
+        },
+        "status": {
+          "type": "String",
+          "required": false,
+          "enum": [
+            "OPEN",
+            "FULL",
+            "CANCELLED"
+          ],
+          "default": "OPEN"
+        },
+        "_id": {
+          "type": "ObjectId",
+          "required": false
+        },
+        "createdAt": {
+          "type": "Date",
+          "required": false
+        },
+        "updatedAt": {
+          "type": "Date",
+          "required": false
+        },
+        "__v": {
+          "type": "Number",
+          "required": false
+        }
+      },
+      "virtuals": {
+        "availableSpots": {},
+        "id": {}
+      },
+      "indexes": [
+        [
+          {
+            "classId": 1
+          },
+          {}
+        ],
+        [
+          {
+            "date": 1
+          },
+          {}
+        ],
+        [
+          {
+            "classId": 1,
+            "date": 1
+          },
+          {}
+        ]
+      ]
+    },
+    "Product": {
+      "collection": "products",
+      "timestamps": true,
+      "fields": {
+        "name": {
+          "type": "String",
+          "required": true
+        },
+        "subtitle": {
+          "type": "String",
+          "required": false
+        },
+        "description": {
+          "type": "String",
+          "required": true
+        },
+        "category": {
+          "type": "String",
+          "required": true,
+          "enum": [
+            "APPAREL",
+            "EQUIPMENT",
+            "RECOVERY"
+          ],
+          "index": true
+        },
+        "badge": {
+          "type": "String",
+          "required": false,
+          "enum": [
+            "BESTSELLER",
+            "NEW",
+            "TRAINING",
+            "NONE"
+          ],
+          "default": "NONE"
+        },
+        "price": {
+          "type": "Number",
+          "required": true
+        },
+        "rating": {
+          "type": "Number",
+          "required": false,
+          "default": 5
+        },
+        "reviewCount": {
+          "type": "Number",
+          "required": false,
+          "default": 0
+        },
+        "images": {
+          "type": "Array",
+          "required": true,
+          "arrayOf": "String"
+        },
+        "options": {
+          "type": "Embedded",
+          "required": false,
+          "default": "[Function]"
+        },
+        "features": {
+          "type": "Array",
+          "required": false,
+          "arrayOf": "String",
+          "default": []
+        },
+        "stockQuantity": {
+          "type": "Number",
+          "required": true,
+          "default": 0
+        },
+        "isPickupAvailable": {
+          "type": "Boolean",
+          "required": false,
+          "default": true
+        },
+        "pickupLocation": {
+          "type": "String",
+          "required": false,
+          "default": "Brooklyn club front desk"
+        },
+        "_id": {
+          "type": "ObjectId",
+          "required": false
+        },
+        "createdAt": {
+          "type": "Date",
+          "required": false
+        },
+        "updatedAt": {
+          "type": "Date",
+          "required": false
+        },
+        "__v": {
+          "type": "Number",
+          "required": false
+        }
+      },
+      "virtuals": {
+        "id": {}
+      },
+      "indexes": [
+        [
+          {
+            "category": 1
+          },
+          {}
+        ]
+      ]
+    },
+    "Cart": {
+      "collection": "carts",
+      "timestamps": true,
+      "fields": {
+        "userId": {
+          "type": "ObjectId",
+          "required": true,
+          "ref": "User",
+          "unique": true,
+          "index": true
+        },
+        "serviceItems": {
+          "type": "Array",
+          "required": false,
+          "arrayOf": "DocumentArrayElement",
+          "default": []
+        },
+        "productItems": {
+          "type": "Array",
+          "required": false,
+          "arrayOf": "DocumentArrayElement",
+          "default": []
+        },
+        "appliedPromoCode": {
+          "type": "String",
+          "required": false,
+          "default": null
+        },
+        "discountAmount": {
+          "type": "Number",
+          "required": false,
+          "default": 0
+        },
+        "subtotal": {
+          "type": "Number",
+          "required": false,
+          "default": 0
+        },
+        "deliveryFee": {
+          "type": "Number",
+          "required": false,
+          "default": 0
+        },
+        "estimatedTax": {
+          "type": "Number",
+          "required": false,
+          "default": 0
+        },
+        "total": {
+          "type": "Number",
+          "required": false,
+          "default": 0
+        },
+        "_id": {
+          "type": "ObjectId",
+          "required": false
+        },
+        "createdAt": {
+          "type": "Date",
+          "required": false
+        },
+        "updatedAt": {
+          "type": "Date",
+          "required": false
+        },
+        "__v": {
+          "type": "Number",
+          "required": false
+        }
+      },
+      "virtuals": {
+        "id": {}
+      },
+      "indexes": [
+        [
+          {
+            "userId": 1
           },
           {
             "unique": true
@@ -120,6 +523,103 @@
         "id": {}
       },
       "indexes": [
+        [
+          {
+            "userId": 1
+          },
+          {}
+        ]
+      ]
+    },
+    "Order": {
+      "collection": "orders",
+      "timestamps": true,
+      "fields": {
+        "orderNumber": {
+          "type": "String",
+          "required": true,
+          "unique": true
+        },
+        "userId": {
+          "type": "ObjectId",
+          "required": true,
+          "ref": "User",
+          "index": true
+        },
+        "paymentStatus": {
+          "type": "String",
+          "required": false,
+          "enum": [
+            "PAID",
+            "PENDING",
+            "FAILED",
+            "REFUNDED"
+          ],
+          "default": "PAID"
+        },
+        "paymentDetails": {
+          "type": "Embedded",
+          "required": false,
+          "default": "[Function]"
+        },
+        "bookedClasses": {
+          "type": "Array",
+          "required": false,
+          "arrayOf": "DocumentArrayElement",
+          "default": []
+        },
+        "purchasedProducts": {
+          "type": "Array",
+          "required": false,
+          "arrayOf": "DocumentArrayElement",
+          "default": []
+        },
+        "subtotal": {
+          "type": "Number",
+          "required": true
+        },
+        "shippingFee": {
+          "type": "Number",
+          "required": false,
+          "default": 0
+        },
+        "tax": {
+          "type": "Number",
+          "required": true
+        },
+        "totalPaid": {
+          "type": "Number",
+          "required": true
+        },
+        "_id": {
+          "type": "ObjectId",
+          "required": false
+        },
+        "createdAt": {
+          "type": "Date",
+          "required": false
+        },
+        "updatedAt": {
+          "type": "Date",
+          "required": false
+        },
+        "__v": {
+          "type": "Number",
+          "required": false
+        }
+      },
+      "virtuals": {
+        "id": {}
+      },
+      "indexes": [
+        [
+          {
+            "orderNumber": 1
+          },
+          {
+            "unique": true
+          }
+        ],
         [
           {
             "userId": 1

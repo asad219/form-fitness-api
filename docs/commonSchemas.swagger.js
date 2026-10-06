@@ -59,4 +59,8 @@
  *             $ref: '#/components/schemas/ErrorResponse'
  *     TooManyRequests:
  *       description: Rate limit exceeded
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ErrorResponse'
  */

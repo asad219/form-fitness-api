@@ -11,6 +11,8 @@ const getErrorTitle = (statusCode) => {
       return 'Forbidden';
     case constants.NOT_FOUND:
       return 'Not found';
+    case constants.CONFLICT:
+      return 'Conflict';
     case constants.SERVER_ERROR:
     default:
       return 'Server Error';

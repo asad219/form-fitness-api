@@ -5,6 +5,7 @@ const TOKEN_AUDIENCE = {
   ACCESS: 'access',
   EMAIL_VERIFICATION: 'email-verification',
   RESET_PASSWORD: 'reset-password',
+  REFRESH: 'refresh',
 };
 
 const generateOtp = () => crypto.randomInt(100000, 1000000).toString();

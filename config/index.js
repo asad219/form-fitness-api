@@ -30,6 +30,8 @@ module.exports = {
     verifiedExpiresIn: process.env.JWT_VERIFIED_EXPIRES_IN || '15m',
     resetPasswordSecret: process.env.JWT_RESET_PASSWORD_SECRET || process.env.JWT_SECRET,
     resetPasswordExpiresIn: process.env.JWT_RESET_PASSWORD_EXPIRES_IN || '3m',
+    refreshSecret: process.env.JWT_REFRESH_SECRET || process.env.JWT_SECRET,
+    refreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '30d',
   },
   cors: {
     origin: process.env.ALLOWED_ORIGINS
@@ -48,5 +50,12 @@ module.exports = {
     contactTo: process.env.EMAIL_CONTACT_TO || process.env.EMAIL_FROM || 'info@myapp.com',
     logoUrl: process.env.COMPANY_LOGO_URL || 'https://example.com/company-logo.png',
     appUrl: process.env.APP_URL || 'https://example.com',
+  },
+  firebase: {
+    // Either a path to the service account JSON, or the individual credentials
+    serviceAccountPath: process.env.FIREBASE_SERVICE_ACCOUNT_PATH || '',
+    projectId: process.env.FIREBASE_PROJECT_ID || '',
+    clientEmail: process.env.FIREBASE_CLIENT_EMAIL || '',
+    privateKey: (process.env.FIREBASE_PRIVATE_KEY || '').replace(/\\n/g, '\n'),
   },
 };

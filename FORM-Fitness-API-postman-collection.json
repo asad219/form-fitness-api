@@ -1,0 +1,316 @@
+{
+  "info": {
+    "name": "FORM Fitness API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "BASE_URL",
+      "value": "http://localhost:5005/api/v1"
+    },
+    {
+      "key": "JWT_TOKEN",
+      "value": ""
+    },
+    {
+      "key": "REFRESH_TOKEN",
+      "value": ""
+    },
+    {
+      "key": "USER_ID",
+      "value": ""
+    },
+    {
+      "key": "VERIFICATION_TOKEN",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Firebase Social Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{BASE_URL}}/auth/firebase-login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idToken\": \"FIREBASE_ID_TOKEN_FROM_FLUTTER\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Refresh Access Token",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{BASE_URL}}/auth/refresh",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{REFRESH_TOKEN}}\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{BASE_URL}}/users/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"SecurePass123!\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{BASE_URL}}/users/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"SecurePass123!\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Send Verification Code",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{BASE_URL}}/users/send-verification-code",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Verify Email",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{BASE_URL}}/users/verify-email",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"{{VERIFICATION_TOKEN}}\",\n  \"code\": \"123456\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get User by ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{JWT_TOKEN}}" }],
+            "url": "{{BASE_URL}}/users/{{USER_ID}}"
+          }
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{JWT_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{BASE_URL}}/users/update/{{USER_ID}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{JWT_TOKEN}}" }],
+            "url": "{{BASE_URL}}/users/logout"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Train",
+      "item": [
+        {
+          "name": "List Classes",
+          "request": {
+            "method": "GET",
+            "url": "{{BASE_URL}}/train/classes"
+          }
+        },
+        {
+          "name": "Get Class Detail",
+          "request": {
+            "method": "GET",
+            "url": "{{BASE_URL}}/train/classes/CLASS_ID"
+          }
+        },
+        {
+          "name": "Get Daily Schedule",
+          "request": {
+            "method": "GET",
+            "url": "{{BASE_URL}}/train/sessions?date=2026-10-07"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Shop",
+      "item": [
+        {
+          "name": "List Products",
+          "request": {
+            "method": "GET",
+            "url": "{{BASE_URL}}/shop/products"
+          }
+        },
+        {
+          "name": "Get Product Detail",
+          "request": {
+            "method": "GET",
+            "url": "{{BASE_URL}}/shop/products/PRODUCT_ID"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Cart",
+      "item": [
+        {
+          "name": "Get Cart",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{JWT_TOKEN}}" }],
+            "url": "{{BASE_URL}}/cart"
+          }
+        },
+        {
+          "name": "Add Service Item",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{JWT_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{BASE_URL}}/cart/service-items",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sessionId\": \"SESSION_ID\",\n  \"attendeesCount\": 1\n}"
+            }
+          }
+        },
+        {
+          "name": "Add Product Item",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{JWT_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{BASE_URL}}/cart/product-items",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": \"PRODUCT_ID\",\n  \"quantity\": 1,\n  \"selectedSize\": \"M\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Remove Cart Item",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{JWT_TOKEN}}" }],
+            "url": "{{BASE_URL}}/cart/items/ITEM_ID"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Checkout",
+      "item": [
+        {
+          "name": "Process Checkout",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{JWT_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{BASE_URL}}/checkout/process",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"paymentDetails\": {\n    \"method\": \"Visa •••• 4242\",\n    \"billingEmail\": \"user@example.com\"\n  }\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Order",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{JWT_TOKEN}}" }],
+            "url": "{{BASE_URL}}/checkout/orders/ORDER_ID"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Contact",
+      "item": [
+        {
+          "name": "Submit Contact Form",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{BASE_URL}}/contact",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"user@example.com\",\n  \"subject\": \"Question\",\n  \"message\": \"Test message\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Notes",
+      "item": [
+        {
+          "name": "Create Note",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{JWT_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{BASE_URL}}/notes",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Test Note\",\n  \"content\": \"Content here\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:5005/health"
+          }
+        }
+      ]
+    }
+  ]
+}
