@@ -1,5 +1,6 @@
 const express = require('express');
-const { processCheckout, getOrderById } = require('../controllers/checkoutController');
+const { processCheckout } = require('../controllers/checkoutController');
+const { getOrderById } = require('../controllers/orderController');
 const validateToken = require('../middleware/validateTokenHandler');
 const { validateObjectId } = require('../middleware/validationObjectIdHandler');
 

@@ -1,6 +1,198 @@
 {
-  "generatedAt": "2026-10-06T19:10:49.119Z",
+  "generatedAt": "2026-10-07T07:05:58.253Z",
   "models": {
+    "Announcement": {
+      "collection": "announcements",
+      "timestamps": true,
+      "fields": {
+        "message": {
+          "type": "String",
+          "required": true
+        },
+        "level": {
+          "type": "String",
+          "required": false,
+          "enum": [
+            "INFO",
+            "WARNING",
+            "PROMO",
+            "ALERT"
+          ],
+          "default": "INFO"
+        },
+        "targetRoute": {
+          "type": "String",
+          "required": false,
+          "default": null
+        },
+        "targetParams": {
+          "type": "Mixed",
+          "required": false,
+          "default": "[Function]"
+        },
+        "isActive": {
+          "type": "Boolean",
+          "required": false,
+          "default": true,
+          "index": true
+        },
+        "sortOrder": {
+          "type": "Number",
+          "required": false,
+          "default": 0
+        },
+        "startDate": {
+          "type": "Date",
+          "required": false,
+          "default": null
+        },
+        "endDate": {
+          "type": "Date",
+          "required": false,
+          "default": null
+        },
+        "_id": {
+          "type": "ObjectId",
+          "required": false
+        },
+        "createdAt": {
+          "type": "Date",
+          "required": false
+        },
+        "updatedAt": {
+          "type": "Date",
+          "required": false
+        },
+        "__v": {
+          "type": "Number",
+          "required": false
+        }
+      },
+      "virtuals": {
+        "id": {}
+      },
+      "indexes": [
+        [
+          {
+            "isActive": 1
+          },
+          {}
+        ],
+        [
+          {
+            "isActive": 1,
+            "sortOrder": 1
+          },
+          {}
+        ]
+      ]
+    },
+    "Banner": {
+      "collection": "banners",
+      "timestamps": true,
+      "fields": {
+        "title": {
+          "type": "String",
+          "required": true
+        },
+        "subtitle": {
+          "type": "String",
+          "required": false,
+          "default": ""
+        },
+        "imageUrl": {
+          "type": "String",
+          "required": true
+        },
+        "placement": {
+          "type": "String",
+          "required": false,
+          "enum": [
+            "HOME_HERO",
+            "SHOP_PROMO",
+            "TRAIN_PROMO"
+          ],
+          "default": "HOME_HERO",
+          "index": true
+        },
+        "ctaText": {
+          "type": "String",
+          "required": false,
+          "default": "Explore"
+        },
+        "targetRoute": {
+          "type": "String",
+          "required": true
+        },
+        "targetParams": {
+          "type": "Mixed",
+          "required": false,
+          "default": "[Function]"
+        },
+        "sortOrder": {
+          "type": "Number",
+          "required": false,
+          "default": 0
+        },
+        "isActive": {
+          "type": "Boolean",
+          "required": false,
+          "default": true,
+          "index": true
+        },
+        "startDate": {
+          "type": "Date",
+          "required": false,
+          "default": null
+        },
+        "endDate": {
+          "type": "Date",
+          "required": false,
+          "default": null
+        },
+        "_id": {
+          "type": "ObjectId",
+          "required": false
+        },
+        "createdAt": {
+          "type": "Date",
+          "required": false
+        },
+        "updatedAt": {
+          "type": "Date",
+          "required": false
+        },
+        "__v": {
+          "type": "Number",
+          "required": false
+        }
+      },
+      "virtuals": {
+        "id": {}
+      },
+      "indexes": [
+        [
+          {
+            "placement": 1
+          },
+          {}
+        ],
+        [
+          {
+            "isActive": 1
+          },
+          {}
+        ],
+        [
+          {
+            "placement": 1,
+            "isActive": 1,
+            "sortOrder": 1
+          },
+          {}
+        ]
+      ]
+    },
     "User": {
       "collection": "users",
       "timestamps": true,
@@ -55,6 +247,11 @@
           ],
           "default": "LOCAL"
         },
+        "firebaseUid": {
+          "type": "String",
+          "required": false,
+          "unique": true
+        },
         "membershipStatus": {
           "type": "String",
           "required": false,
@@ -98,6 +295,15 @@
           },
           {
             "unique": true
+          }
+        ],
+        [
+          {
+            "firebaseUid": 1
+          },
+          {
+            "unique": true,
+            "sparse": true
           }
         ]
       ]
@@ -478,59 +684,6 @@
         ]
       ]
     },
-    "Note": {
-      "collection": "notes",
-      "timestamps": true,
-      "fields": {
-        "userId": {
-          "type": "ObjectId",
-          "required": true,
-          "ref": "User",
-          "index": true
-        },
-        "title": {
-          "type": "String",
-          "required": true
-        },
-        "content": {
-          "type": "String",
-          "required": false,
-          "default": ""
-        },
-        "isPinned": {
-          "type": "Boolean",
-          "required": false,
-          "default": false
-        },
-        "_id": {
-          "type": "ObjectId",
-          "required": false
-        },
-        "createdAt": {
-          "type": "Date",
-          "required": false
-        },
-        "updatedAt": {
-          "type": "Date",
-          "required": false
-        },
-        "__v": {
-          "type": "Number",
-          "required": false
-        }
-      },
-      "virtuals": {
-        "id": {}
-      },
-      "indexes": [
-        [
-          {
-            "userId": 1
-          },
-          {}
-        ]
-      ]
-    },
     "Order": {
       "collection": "orders",
       "timestamps": true,
@@ -623,6 +776,251 @@
         [
           {
             "userId": 1
+          },
+          {}
+        ],
+        [
+          {
+            "createdAt": -1
+          },
+          {}
+        ]
+      ]
+    },
+    "Membership": {
+      "collection": "memberships",
+      "timestamps": true,
+      "fields": {
+        "userId": {
+          "type": "ObjectId",
+          "required": true,
+          "ref": "User",
+          "index": true
+        },
+        "plan": {
+          "type": "String",
+          "required": true,
+          "enum": [
+            "ACTIVE",
+            "VIP"
+          ]
+        },
+        "billingCycle": {
+          "type": "String",
+          "required": true,
+          "enum": [
+            "MONTHLY",
+            "YEARLY"
+          ]
+        },
+        "price": {
+          "type": "Number",
+          "required": true
+        },
+        "status": {
+          "type": "String",
+          "required": false,
+          "enum": [
+            "ACTIVE",
+            "CANCELLED",
+            "EXPIRED"
+          ],
+          "default": "ACTIVE",
+          "index": true
+        },
+        "startDate": {
+          "type": "Date",
+          "required": true
+        },
+        "endDate": {
+          "type": "Date",
+          "required": true
+        },
+        "cancelledAt": {
+          "type": "Date",
+          "required": false,
+          "default": null
+        },
+        "paymentDetails": {
+          "type": "Embedded",
+          "required": false,
+          "default": "[Function]"
+        },
+        "_id": {
+          "type": "ObjectId",
+          "required": false
+        },
+        "createdAt": {
+          "type": "Date",
+          "required": false
+        },
+        "updatedAt": {
+          "type": "Date",
+          "required": false
+        },
+        "__v": {
+          "type": "Number",
+          "required": false
+        }
+      },
+      "virtuals": {
+        "id": {}
+      },
+      "indexes": [
+        [
+          {
+            "userId": 1
+          },
+          {}
+        ],
+        [
+          {
+            "status": 1
+          },
+          {}
+        ],
+        [
+          {
+            "userId": 1,
+            "status": 1,
+            "endDate": 1
+          },
+          {}
+        ],
+        [
+          {
+            "status": 1,
+            "endDate": 1
+          },
+          {}
+        ]
+      ]
+    },
+    "Note": {
+      "collection": "notes",
+      "timestamps": true,
+      "fields": {
+        "userId": {
+          "type": "ObjectId",
+          "required": true,
+          "ref": "User",
+          "index": true
+        },
+        "title": {
+          "type": "String",
+          "required": true
+        },
+        "content": {
+          "type": "String",
+          "required": false,
+          "default": ""
+        },
+        "isPinned": {
+          "type": "Boolean",
+          "required": false,
+          "default": false
+        },
+        "_id": {
+          "type": "ObjectId",
+          "required": false
+        },
+        "createdAt": {
+          "type": "Date",
+          "required": false
+        },
+        "updatedAt": {
+          "type": "Date",
+          "required": false
+        },
+        "__v": {
+          "type": "Number",
+          "required": false
+        }
+      },
+      "virtuals": {
+        "id": {}
+      },
+      "indexes": [
+        [
+          {
+            "userId": 1
+          },
+          {}
+        ]
+      ]
+    },
+    "Popup": {
+      "collection": "popups",
+      "timestamps": true,
+      "fields": {
+        "title": {
+          "type": "String",
+          "required": true
+        },
+        "contentHtml": {
+          "type": "String",
+          "required": true
+        },
+        "imageUrl": {
+          "type": "String",
+          "required": false,
+          "default": null
+        },
+        "actionButton": {
+          "type": "Embedded",
+          "required": false,
+          "default": null
+        },
+        "dismissible": {
+          "type": "Boolean",
+          "required": false,
+          "default": true
+        },
+        "isActive": {
+          "type": "Boolean",
+          "required": false,
+          "default": false,
+          "index": true
+        },
+        "maxDisplayCount": {
+          "type": "Number",
+          "required": false,
+          "default": 1
+        },
+        "startDate": {
+          "type": "Date",
+          "required": false,
+          "default": null
+        },
+        "endDate": {
+          "type": "Date",
+          "required": false,
+          "default": null
+        },
+        "_id": {
+          "type": "ObjectId",
+          "required": false
+        },
+        "createdAt": {
+          "type": "Date",
+          "required": false
+        },
+        "updatedAt": {
+          "type": "Date",
+          "required": false
+        },
+        "__v": {
+          "type": "Number",
+          "required": false
+        }
+      },
+      "virtuals": {
+        "id": {}
+      },
+      "indexes": [
+        [
+          {
+            "isActive": 1
           },
           {}
         ]

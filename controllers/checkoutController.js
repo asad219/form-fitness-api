@@ -8,20 +8,7 @@ const { Order } = require('../models/orderModel');
 const { User } = require('../models/userModel');
 const { parseCheckoutProcess } = require('../validators/checkout.zod');
 const { roundMoney } = require('../utils/pricingUtils');
-
-// Snapshot payment details from the request or the user's default saved card (no gateway yet)
-const resolvePaymentDetails = (paymentDetails, user) => {
-  const defaultCard =
-    user.savedPaymentMethods.find((method) => method.isDefault) || user.savedPaymentMethods[0];
-
-  return {
-    method:
-      paymentDetails?.method ||
-      (defaultCard ? `${defaultCard.cardBrand} •••• ${defaultCard.last4}` : 'CARD'),
-    billingEmail: paymentDetails?.billingEmail || user.email,
-    transactionId: `txn_${crypto.randomUUID()}`,
-  };
-};
+const { resolvePaymentDetails } = require('../utils/paymentUtils');
 
 const processCheckout = asyncHandler(async (req, res) => {
   const { paymentDetails } = parseCheckoutProcess(req.body);
@@ -77,6 +64,7 @@ const processCheckout = asyncHandler(async (req, res) => {
           timeSlot: `${classSession.startTime} - ${classSession.endTime}`,
           location: classSession.location,
           coachName: classSession.classId.coachName,
+          attendeesCount: item.attendeesCount,
           price: roundMoney(item.price * item.attendeesCount),
           entryPassToken: crypto.randomUUID(),
         });
@@ -143,26 +131,6 @@ const processCheckout = asyncHandler(async (req, res) => {
   });
 });
 
-const getOrderById = asyncHandler(async (req, res) => {
-  const order = await Order.findById(req.params.id);
-
-  if (!order) {
-    res.status(404);
-    throw new Error('Order not found');
-  }
-
-  if (req.user.role !== 'admin' && order.userId.toString() !== String(req.user.userId)) {
-    res.status(403);
-    throw new Error('Access denied: You do not have permission to access this resource');
-  }
-
-  res.status(200).json({
-    success: true,
-    order,
-  });
-});
-
 module.exports = {
   processCheckout,
-  getOrderById,
 };

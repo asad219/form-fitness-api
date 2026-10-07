@@ -1,5 +1,6 @@
 const path = require('path');
-const admin = require('firebase-admin');
+const { initializeApp, cert } = require('firebase-admin/app');
+const { getAuth } = require('firebase-admin/auth');
 const config = require('../config');
 const logger = require('../config/logger');
 
@@ -15,7 +16,7 @@ const getFirebaseApp = () => {
   if (serviceAccountPath) {
     try {
       // JSON key file downloaded from the Firebase console
-      credential = admin.credential.cert(require(path.resolve(serviceAccountPath)));
+      credential = cert(require(path.resolve(serviceAccountPath)));
     } catch (error) {
       logger.error('Failed to load Firebase service account file', {
         serviceAccountPath,
@@ -24,12 +25,12 @@ const getFirebaseApp = () => {
       return null;
     }
   } else if (projectId && clientEmail && privateKey) {
-    credential = admin.credential.cert({ projectId, clientEmail, privateKey });
+    credential = cert({ projectId, clientEmail, privateKey });
   }
 
   if (!credential) return null;
 
-  firebaseApp = admin.initializeApp({ credential });
+  firebaseApp = initializeApp({ credential });
   logger.info('Firebase Admin SDK initialized');
   return firebaseApp;
 };
@@ -47,7 +48,7 @@ const verifyFirebaseIdToken = async (idToken) => {
   if (!app) return null;
 
   try {
-    return await admin.auth(app).verifyIdToken(idToken);
+    return await getAuth(app).verifyIdToken(idToken);
   } catch (error) {
     logger.warn('Firebase ID token verification failed', { error: error.message });
     return null;

@@ -4,7 +4,7 @@ const { validateObjectId } = require('../middleware/validationObjectIdHandler');
 
 const router = express.Router();
 
-// GET /api/v1/shop/products?category=APPAREL&search=bottle
+// GET /api/v1/shop/products?page=1&limit=10&category=APPAREL&search=bottle
 router.get('/products', getProducts);
 
 // GET /api/v1/shop/products/:id

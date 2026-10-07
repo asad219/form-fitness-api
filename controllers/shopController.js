@@ -6,7 +6,8 @@ const { parseProductListQuery } = require('../validators/shop.zod');
 const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 const getProducts = asyncHandler(async (req, res) => {
-  const { category, search } = parseProductListQuery(req.query);
+  const { page, limit, category, search } = parseProductListQuery(req.query);
+  const skip = (page - 1) * limit;
 
   const filter = {};
   if (category) {
@@ -17,12 +18,21 @@ const getProducts = asyncHandler(async (req, res) => {
     filter.$or = [{ name: searchRegex }, { subtitle: searchRegex }, { description: searchRegex }];
   }
 
-  const products = await Product.find(filter).sort({ name: 1 });
+  // _id tie-breaker keeps page boundaries stable when names repeat
+  const [products, total] = await Promise.all([
+    Product.find(filter).sort({ name: 1, _id: 1 }).skip(skip).limit(limit),
+    Product.countDocuments(filter),
+  ]);
 
   res.status(200).json({
     success: true,
-    count: products.length,
     products,
+    pagination: {
+      page,
+      limit,
+      total,
+      pages: Math.ceil(total / limit),
+    },
   });
 });
 

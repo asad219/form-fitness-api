@@ -54,6 +54,11 @@ const bookedClassSchema = new Schema(
       type: String,
       required: true,
     },
+    attendeesCount: {
+      type: Number,
+      default: 1,
+      min: 1,
+    },
     price: {
       type: Number,
       required: true,
@@ -67,6 +72,10 @@ const bookedClassSchema = new Schema(
       type: String,
       enum: ['CONFIRMED', 'CANCELLED', 'ATTENDED'],
       default: 'CONFIRMED',
+    },
+    cancelledAt: {
+      type: Date,
+      default: null,
     },
   },
   { _id: true }
@@ -172,6 +181,8 @@ const orderSchema = new Schema(
   { timestamps: true }
 );
 
+orderSchema.index({ createdAt: -1 });
+
 orderSchema.virtual('id').get(function () {
   return this._id.toHexString();
 });
@@ -179,4 +190,4 @@ orderSchema.set('toJSON', { virtuals: true });
 
 const Order = model('Order', orderSchema);
 
-module.exports = { Order };
+module.exports = { Order, paymentDetailsSchema };

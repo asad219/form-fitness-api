@@ -32,6 +32,30 @@
  *         pages:
  *           type: integer
  *           example: 5
+ *   parameters:
+ *     PageQuery:
+ *       in: query
+ *       name: page
+ *       schema:
+ *         type: integer
+ *         minimum: 1
+ *         default: 1
+ *     LimitQuery:
+ *       in: query
+ *       name: limit
+ *       schema:
+ *         type: integer
+ *         minimum: 1
+ *         maximum: 100
+ *         default: 10
+ *     IdPath:
+ *       in: path
+ *       name: id
+ *       required: true
+ *       description: MongoDB ObjectId
+ *       schema:
+ *         type: string
+ *         pattern: '^[0-9a-fA-F]{24}$'
  *   responses:
  *     BadRequest:
  *       description: Validation failed or invalid ID format

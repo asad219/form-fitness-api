@@ -42,7 +42,14 @@ const splitDisplayName = (name) => {
 // Find the account by email, or create one for the social provider
 const provisionSocialUser = async ({ email, provider, decoded }) => {
   const existing = await User.findOne({ email });
-  if (existing) return existing;
+  if (existing) {
+    // Link the Firebase UID the first time an existing account signs in socially
+    if (!existing.firebaseUid && decoded.uid) {
+      existing.firebaseUid = decoded.uid;
+      await existing.save();
+    }
+    return existing;
+  }
 
   try {
     return await User.create({
@@ -50,6 +57,7 @@ const provisionSocialUser = async ({ email, provider, decoded }) => {
       ...splitDisplayName(decoded.name),
       profilePicUrl: decoded.picture || undefined,
       authProvider: provider,
+      firebaseUid: decoded.uid || undefined,
       // The provider already verified this email
       isVerified: true,
     });

@@ -51,6 +51,10 @@ module.exports = {
     logoUrl: process.env.COMPANY_LOGO_URL || 'https://example.com/company-logo.png',
     appUrl: process.env.APP_URL || 'https://example.com',
   },
+  club: {
+    // IANA timezone that class session start times are expressed in
+    timezone: process.env.CLUB_TIMEZONE || 'America/New_York',
+  },
   firebase: {
     // Either a path to the service account JSON, or the individual credentials
     serviceAccountPath: process.env.FIREBASE_SERVICE_ACCOUNT_PATH || '',

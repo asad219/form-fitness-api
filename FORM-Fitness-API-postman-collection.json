@@ -13,6 +13,10 @@
       "value": ""
     },
     {
+      "key": "ADMIN_JWT_TOKEN",
+      "value": ""
+    },
+    {
       "key": "REFRESH_TOKEN",
       "value": ""
     },
@@ -259,6 +263,121 @@
             "method": "GET",
             "header": [{ "key": "Authorization", "value": "Bearer {{JWT_TOKEN}}" }],
             "url": "{{BASE_URL}}/checkout/orders/ORDER_ID"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "List My Orders",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{JWT_TOKEN}}" }],
+            "url": "{{BASE_URL}}/orders?page=1&limit=10"
+          }
+        },
+        {
+          "name": "Get My Order",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{JWT_TOKEN}}" }],
+            "url": "{{BASE_URL}}/orders/ORDER_ID"
+          }
+        },
+        {
+          "name": "Cancel Booked Class",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{JWT_TOKEN}}" }],
+            "url": "{{BASE_URL}}/orders/ORDER_ID/bookings/BOOKING_ID/cancel"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Memberships",
+      "item": [
+        {
+          "name": "List Membership Plans",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{BASE_URL}}/memberships/plans"
+          }
+        },
+        {
+          "name": "Get My Membership",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{JWT_TOKEN}}" }],
+            "url": "{{BASE_URL}}/memberships/me"
+          }
+        },
+        {
+          "name": "Subscribe to Membership",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{JWT_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{BASE_URL}}/memberships/subscribe",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"plan\": \"ACTIVE\",\n  \"billingCycle\": \"MONTHLY\",\n  \"paymentDetails\": {\n    \"method\": \"Visa •••• 4242\",\n    \"billingEmail\": \"user@example.com\"\n  }\n}"
+            }
+          }
+        },
+        {
+          "name": "Cancel My Membership",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{JWT_TOKEN}}" }],
+            "url": "{{BASE_URL}}/memberships/me/cancel"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin Orders",
+      "item": [
+        {
+          "name": "List All Orders",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{ADMIN_JWT_TOKEN}}" }],
+            "url": "{{BASE_URL}}/admin/orders?page=1&limit=10"
+          }
+        },
+        {
+          "name": "Get Order (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{ADMIN_JWT_TOKEN}}" }],
+            "url": "{{BASE_URL}}/admin/orders/ORDER_ID"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin Memberships",
+      "item": [
+        {
+          "name": "List All Memberships",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{ADMIN_JWT_TOKEN}}" }],
+            "url": "{{BASE_URL}}/admin/memberships?page=1&limit=10"
+          }
+        },
+        {
+          "name": "Get Membership (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{ADMIN_JWT_TOKEN}}" }],
+            "url": "{{BASE_URL}}/admin/memberships/MEMBERSHIP_ID"
           }
         }
       ]

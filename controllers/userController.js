@@ -12,6 +12,7 @@ const {
 } = require('../validators/user.zod');
 const { sanitizeUserResponse } = require('../utils/userUtils');
 const { revokeToken, isTokenRevoked } = require('../utils/tokenRevocation');
+const { expireLapsedMemberships } = require('../utils/membershipUtils');
 const { TOKEN_AUDIENCE, generateOtp, hashOtp, verifyOtp } = require('../utils/otpUtils');
 const {
   sendRegistrationSuccessEmail,
@@ -27,6 +28,7 @@ const verifyResetToken = (token) =>
   });
 
 const getUserById = asyncHandler(async (req, res) => {
+  await expireLapsedMemberships({ userId: req.params.userId });
   const user = await User.findById(req.params.userId);
 
   if (!user) {

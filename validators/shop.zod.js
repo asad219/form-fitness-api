@@ -1,8 +1,9 @@
 const { z } = require('zod');
+const { paginationSchema } = require('./common.zod');
 
 const PRODUCT_CATEGORIES = ['APPAREL', 'EQUIPMENT', 'RECOVERY'];
 
-const productListQuerySchema = z.object({
+const productListQuerySchema = paginationSchema.extend({
   category: z.enum(PRODUCT_CATEGORIES).optional(),
   search: z.string().trim().min(1, 'Search text cannot be empty').max(100).optional(),
 });

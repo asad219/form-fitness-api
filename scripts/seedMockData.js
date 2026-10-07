@@ -7,6 +7,11 @@ const connectDb = require('../config/dbConnection');
 const { TrainingClass } = require('../models/trainingClassModel');
 const { ClassSession } = require('../models/classSessionModel');
 const { Product } = require('../models/productModel');
+const { Banner } = require('../models/bannerModel');
+const { Popup } = require('../models/popupModel');
+const { Announcement } = require('../models/announcementModel');
+const { BANNERS, POPUPS, ANNOUNCEMENTS } = require('./data/cmsSeedData');
+const { PRODUCTS: MORE_PRODUCTS } = require('./data/productSeedData');
 const logger = require('../config/logger');
 
 const oid = (hex) => new mongoose.Types.ObjectId(hex);
@@ -321,8 +326,17 @@ const seed = async () => {
   const sessionCount = await upsertAll(ClassSession, CLASS_SESSIONS);
   logger.info(`ClassSession seeded: ${sessionCount} docs`);
 
-  const productCount = await upsertAll(Product, PRODUCTS);
+  const productCount = await upsertAll(Product, [...PRODUCTS, ...MORE_PRODUCTS]);
   logger.info(`Product seeded: ${productCount} docs`);
+
+  const bannerCount = await upsertAll(Banner, BANNERS);
+  logger.info(`Banner seeded: ${bannerCount} docs`);
+
+  const popupCount = await upsertAll(Popup, POPUPS);
+  logger.info(`Popup seeded: ${popupCount} docs`);
+
+  const announcementCount = await upsertAll(Announcement, ANNOUNCEMENTS);
+  logger.info(`Announcement seeded: ${announcementCount} docs`);
 
   logger.info('Mock data seed complete');
   await mongoose.disconnect();

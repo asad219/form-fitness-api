@@ -182,6 +182,7 @@ See `.env.example` for the full list. `CONNECTION_STRING` and `JWT_SECRET` are r
 | `JWT_RESET_PASSWORD_SECRET` / `JWT_RESET_PASSWORD_EXPIRES_IN` | `JWT_SECRET` / `3m`     | Password reset token                        |
 | `PORT`                                                        | `5005`                  | HTTP port                                   |
 | `NODE_ENV`                                                    | `development`           | `production` disables console logging       |
+| `CLUB_TIMEZONE`                                               | `America/New_York`      | Timezone of class start times               |
 | `ALLOWED_ORIGINS`                                             | `http://localhost:3000` | Comma-separated CORS origins                |
 | `BCRYPT_ROUNDS`                                               | `10`                    | bcrypt cost factor                          |
 | `MAX_LOGIN_ATTEMPTS`                                          | `5`                     | Reserved for login lockout logic            |

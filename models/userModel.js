@@ -39,6 +39,12 @@ const userSchema = new Schema(
       enum: ['LOCAL', 'GOOGLE', 'APPLE', 'FACEBOOK'],
       default: 'LOCAL',
     },
+    // unique implies an index; sparse skips users who only use local auth
+    firebaseUid: {
+      type: String,
+      unique: true,
+      sparse: true,
+    },
     membershipStatus: {
       type: String,
       enum: ['NONE', 'ACTIVE', 'VIP'],
